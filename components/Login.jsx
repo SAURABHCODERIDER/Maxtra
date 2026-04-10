@@ -16,7 +16,7 @@ const Login = ({ navigation }) => {
   const [password, setPassword] = useState('');
   const [isEmailValid, setIsEmailValid] = useState(false);
   const [isPasswordValid, setIsPasswordValid] = useState(false);
-  // ✅ Redux से data लो
+  
   const user = useSelector((state) => state.user);
 
   const handleLogin = () => {
