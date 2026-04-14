@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "491020524354",
+    "project_id": "e-com-app-7294d",
+    "storage_bucket": "e-com-app-7294d.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:491020524354:android:3395598e12dec43171c6db",
+        "android_client_info": {
+          "package_name": "com.maxtra"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAUReEBHALma1Mj8PYIHQFiRg_f_4G_2m4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

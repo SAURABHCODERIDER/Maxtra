@@ -8,6 +8,7 @@ import {
   Platform,
   Alert,
 } from 'react-native';
+import {registerUser} from "../authentication/registerUser";
 import {useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { setUser } from '../slices/userSlice';
@@ -19,46 +20,60 @@ const Register = ({ navigation }) => {
   const [isEmailValid, setIsEmailValid] = useState(false);
   const [isPasswordValid, setIsPasswordValid] = useState(false);    
   const dispatch= useDispatch();
-//   const setUser =
+
   const handleRegister = () => {
-     let valid =true;
-    const user = { name, email, password };
-    if(!name){
-      setIsNameValid(true)
-        valid=false
-    }else if(name.length<3){
-        setIsNameValid(true)
-        valid=false
-    }
-    if(!email){
-      setIsEmailValid(true)
-      valid=false
-    }else if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
-        setIsEmailValid(true)
-        valid=false
-    }
-    if(!password){
-      setIsPasswordValid(true)
-      valid=false
-    }else if(!password.length>=8){
-         setIsPasswordValid(true)
-        valid=false
-    }
-    if(!valid) return;
-    if(!name || !email || !password){
-        Alert.alert("Error","Each fields must be enter")
-        return
-    }
-    Alert.alert(
-      'Success',
-      `Welcome ${name} (${email}) and ${password}! Your registration was successful.`
-    );
-    dispatch(setUser(user));
-    navigation.navigate('Login');
-  };
+  let valid = true;
+
+  const user = { name, email, password };
+
+  // 🔹 Reset validation
+  setIsNameValid(false);
+  setIsEmailValid(false);
+  setIsPasswordValid(false);
+
+  // 🔹 Name Validation
+  if (!name || name?.length < 3) {
+    setIsNameValid(true);
+    valid = false;
+  }
+
+  // 🔹 Email Validation
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    setIsEmailValid(true);
+    valid = false;
+  }
+
+  // 🔹 Password Validation
+  if (!password || password?.length < 8) {
+    setIsPasswordValid(true);
+    valid = false;
+  }
+
+  // ❌ Stop if invalid
+  if (!valid) {
+    Alert.alert("Error", "Please enter valid details");
+    return;
+  }
+
+  // ✅ Success Alert
+  
+  // 🔥 Firebase Register
+  registerUser(email, password, name);
+  
+  // Alert.alert(
+  //   "Success",
+  //   `Welcome ${name} (${email})! Registration successful`
+  // );
+  // 🔹 Redux store
+  dispatch(setUser(user));
+
+  // 🔹 Navigate
+  navigation.navigate("Login");
+};
+ 
   return (
     <KeyboardAvoidingView
-      style={{ flex: 1,backgroundColor: 'rgb(62, 71, 101)', }}
+      style={{ flex: 1,alignItems:'center',justifyContent:"flex-start",margin: 16,padding: 16 }}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
       <View style={styles.container}>
@@ -92,29 +107,33 @@ const Register = ({ navigation }) => {
 };
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'center',
     padding: 20,
-
+    backgroundColor:"hsla(195, 50%, 42%, 0.86)",
+    width:'100%',
+    gap: 20,
+    borderRadius: 8,
+    borderColor:"#73b3c2",
+    borderWidth:8,
+    elevation: 5,
   },
   input: {
     fontSize: 18,
-    color: 'white',
+    color: '#fff',
     padding: 10,
-    marginVertical: 10,
     borderColor: 'skyblue',
     borderWidth: 2,
-    borderRadius: 18,
+    borderRadius: 8,
   },
   text: {
     fontSize: 22,
-    color: 'white',
-    fontWeight: 'bold',
+    color: '#fff',
+    fontWeight: 'semi-bold',
   },
   button: {
     marginHorizontal: 20,
     marginTop: 20,
     width: '90%',
+    borderRadius: 18,
   },
 });
 export default Register;
